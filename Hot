@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOT - התקדמו עכשיו ל-Fiber AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #4a0e4e 50%, #8b1538 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            background: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .input-field::placeholder {
+            color: #666;
+        }
+
+        .phone-field {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .phone-field input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+        }
+        .phone-number{
+            direction: rtl;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            text-align: right;
+            gap: 10px;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checkbox.checked {
+            background: #ff0040;
+            border-color: #ff0040;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .checkbox-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #ff0040, #ff6b9d);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 0, 64, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 0, 64, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: white;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #00ff00;
+            font-weight: 600;
+        }
+
+        .error-message {
+            display: none;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #ff0000;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .title {
+                font-size: 20px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+            }
+            
+            .input-field {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            
+            .phone-field {
+                padding: 12px 15px;
+            }
+            
+            .phone-field input {
+                font-size: 14px;
+            }
+            
+            .submit-btn {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+
+        /* אנימציות */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles" id="particles"></div>
+    
+    <div class="container">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+        
+        <div class="logo">
+            <img src="hot-logo.png" alt="HOT Logo">
+        </div>
+        
+        <h1 class="title">התקדמו עכשיו ל-Fiber AI הדור הבא של האינטרנט</h1>
+        <p class="subtitle">השאירו פרטים ונחזור אליכם</p>
+        
+        <form id="contactForm" onsubmit="submitForm(event)">
+            <div class="form-group">
+                <input type="text" class="input-field" placeholder="* שם מלא" id="fullName" required>
+            </div>
+            
+            <div class="form-group">
+                <div class="phone-field">
+                    <input class="phone-number" type="tel" placeholder="* טלפון" id="phone" required>
+                </div>
+            </div>
+            
+            <div class="checkbox-container">
+                <div class="checkbox" id="checkbox" onclick="toggleCheckbox()"></div>
+                <div class="checkbox-text">
+                    אני מסכים/ה לקבלת הצעות שיווקיות בעתיד על מוצרים או שירותים
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">אשמח להצטרף</button>
+        </form>
+        
+        <div class="success-message" id="successMessage">
+            הטופס נשלח בהצלחה! נחזור אליך בקרוב.
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            אירעה שגיאה בשליחת הטופס. אנא נסה שוב.
+        </div>
+    </div>
+
+    <script>
+        // יצירת חלקיקים מרחפים
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // טוגל צ'קבוקס
+        let isChecked = false;
+        function toggleCheckbox() {
+            isChecked = !isChecked;
+            const checkbox = document.getElementById('checkbox');
+            checkbox.classList.toggle('checked', isChecked);
+        }
+
+        // סגירת המודל
+        function closeModal() {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.close();
+            }, 300);
+        }
+
+        // שליחת הטופס
+        async function submitForm(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // הסתרת הודעות קודמות
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // בדיקת תקינות
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            
+            if (!fullName || !phone ) {
+                errorMessage.textContent = 'אנא מלא את כל השדות הנדרשים ואשר את תנאי השימוש';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // השבתת כפתור
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'שולח...';
+            
+            // הכנת הנתונים לשליחה ל-Google Sheets
+            const sheetData = {
+                'שם מלא': fullName,
+                'טלפון': phone,
+                'תאריך ושעה': new Date().toLocaleString('he-IL'),
+                'הסכמה לשיווק': isChecked ? '✓ כן' : '✗ לא'
+            };
+            
+            try {
+                // שליחה ל-Google Sheets
+                const success = await sendToGoogleSheets(sheetData);
+                
+                if (success) {
+                    // הצגת הודעת הצלחה
+                    successMessage.style.display = 'block';
+                    document.getElementById('contactForm').style.display = 'none';
+                } else {
+                    throw new Error('Failed to save to Google Sheets');
+                }
+                
+            } catch (error) {
+                console.error('שגיאה בשליחת הטופס:', error);
+                errorMessage.textContent = 'אירעה שגיאה בשליחת הטופס. אנא נסה שוב.';
+                errorMessage.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'אשמח להצטרף';
+            }
+        }
+
+        // שליחה ל-Google Sheets
+        async function sendToGoogleSheets(data) {
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNKyKzru2TpJrrhfNFONY6Xny7YV2RSPKAn7GOMjWEZW8G7RDLpR8YzM9OO9o-GTVQ/exec';
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: data['שם מלא'],
+                        phone: data['טלפון'],
+                        timestamp: data['תאריך ושעה'],
+                        marketing_consent: data['הסכמה לשיווק']
+                    })
+                });
+                
+                // בגלל no-cors, נחזיר true אם לא היה exception
+                return true;
+            } catch (error) {
+                console.error('Error sending to Google Sheets:', error);
+                return false;
+            }
+        }
+
+        // אתחול
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+        function typeEffect() {
+            const title = document.querySelector('.title');
+            const text = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            const timer = setInterval(function() {
+                if (i < text.length) {
+                    title.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, 50);
+        }
+
+        // אפקט ריפל לכפתור
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('submit-btn')) {
+                const ripple = document.createElement('span');
+                const rect = e.target.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                e.target.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            }
+        });
+    </script>
+</body>
+</html>
